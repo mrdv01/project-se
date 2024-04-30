@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ hotel.name }}</h1>
+<h2>Rooms</h2>
+<ul>
+    {% for room in rooms %}
+    <li>
+        Room {{ room.room_no }} (Capacity: {{ room.capacity }}, Rate: ${{ room.rate }})
+        {% if room.occupied %}
+        <span style="color: green;">Occupied by {{ room.guests }}</span>
+        {% else %}
+        <span style="color: red;">Vacant</span>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>Check In</h2>
+<form action="{{ url_for('check_in') }}" method="post">
+    <label for="room_no">Room Number:</label>
+    <input type="text" id="room_no" name="room_no" required>
+    <label for="guests">Guest Names (comma-separated):</label>
+    <input type="text" id="guests" name="guests" required>
+    <button type="submit">Check In</button>
+</form>
+
+<h2>Check Out</h2>
+<form action="{{ url_for('check_out') }}" method="post">
+    <label for="room_no">Room Number:</label>
+    <input type="text" id="room_no" name="room_no" required>
+    <button type="submit">Check Out</button>
+</form>
+
+<h2>Add Room</h2>
+<form action="{{ url_for('add_room') }}" method="post">
+    <label for="room_no">Room Number:</label>
+    <input type="text" id="room_no" name="room_no" required>
+    <label for="capacity">Capacity:</label>
+    <input type="text" id="capacity" name="capacity" required>
+    <label for="rate">Rate:</label>
+    <input type="text" id="rate" name="rate" required>
+    <button type="submit">Add Room</button>
+</form>
+{% endblock %}
