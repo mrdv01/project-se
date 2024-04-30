@@ -9,37 +9,6 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
-def create_tables():
-    conn = get_db()
-    c = conn.cursor()
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS rooms (
-            room_no INTEGER PRIMARY KEY,
-            capacity INTEGER NOT NULL,
-            rate REAL NOT NULL,
-            occupied BOOLEAN NOT NULL DEFAULT 0,
-            guests TEXT
-        )
-    ''')
-    conn.commit()
-    conn.close()
-
-def seed_data():
-    conn = get_db()
-    c = conn.cursor()
-    c.execute('SELECT COUNT(*) FROM rooms')
-    row_count = c.fetchone()[0]
-    if row_count == 0:
-        c.execute('''
-            INSERT INTO rooms (room_no, capacity, rate)
-            VALUES
-                (101, 2, 100.0),
-                (102, 4, 150.0),
-                (103, 3, 120.0)
-        ''')
-        conn.commit()
-    conn.close()
-
 class Hotel:
     def get_rooms(self):
         conn = get_db()
@@ -75,12 +44,6 @@ class Hotel:
         return True
 
 hotel = Hotel()
-
-def init_app():
-    create_tables()
-    seed_data()
-
-init_app()
 
 @app.route('/')
 def index():
@@ -121,6 +84,15 @@ def add_room():
         return redirect(url_for('rooms'))
     else:
         return render_template('error.html', message='Room number already exists')
+
+@app.route('/show_data')
+def show_data():
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('SELECT * FROM rooms')
+    rows = c.fetchall()
+    conn.close()
+    return render_template('show_data.html', rows=rows)
 
 if __name__ == '__main__':
     app.run(debug=True)

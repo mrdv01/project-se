@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Rooms</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hotel Rooms</h1>
+    <table>
+        <tr>
+            <th>Room No.</th>
+            <th>Capacity</th>
+            <th>Rate</th>
+            <th>Occupied</th>
+            <th>Guests</th>
+        </tr>
+        {% for row in rows %}
+        <tr>
+            <td>{{ row.room_no }}</td>
+            <td>{{ row.capacity }}</td>
+            <td>{{ row.rate }}</td>
+            <td>{{ row.occupied }}</td>
+            <td>{{ row.guests }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
